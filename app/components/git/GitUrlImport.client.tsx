@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { BaseChat } from '~/components/chat/BaseChat';
 import { Chat } from '~/components/chat/Chat.client';
-import { useGit } from '~/lib/hooks/useGit';
+import { useHybridGit } from '~/lib/hooks/useHybridGit';
 import { useChatHistory } from '~/lib/persistence';
 import { createCommandsMessage, detectProjectCommands, escapeBoltTags } from '~/utils/projectCommands';
 import { LoadingOverlay } from '~/components/ui/LoadingOverlay';
@@ -38,7 +38,7 @@ const IGNORE_PATTERNS = [
 export function GitUrlImport() {
   const [searchParams] = useSearchParams();
   const { ready: historyReady, importChat } = useChatHistory();
-  const { ready: gitReady, gitClone } = useGit();
+  const { ready: gitReady, gitClone, isUsingOpenHands } = useHybridGit();
   const [imported, setImported] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -73,7 +73,7 @@ export function GitUrlImport() {
 
           const filesMessage: Message = {
             role: 'assistant',
-            content: `Cloning the repo ${repoUrl} into ${workdir}
+            content: `Cloning the repo ${repoUrl} into ${workdir} ${isUsingOpenHands ? '(using OpenHands backend)' : '(using WebContainer)'}
 <boltArtifact id="imported-files" title="Git Cloned Files"  type="bundled">
 ${fileContents
   .map(
@@ -138,7 +138,7 @@ ${escapeBoltTags(file.content)}
       {() => (
         <>
           <Chat />
-          {loading && <LoadingOverlay message="Please wait while we clone the repository..." />}
+          {loading && <LoadingOverlay message={`Please wait while we clone the repository${isUsingOpenHands ? ' using OpenHands backend' : ''}...`} />}
         </>
       )}
     </ClientOnly>

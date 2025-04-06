@@ -4,6 +4,7 @@ import { chatStore } from '~/lib/stores/chat';
 import { classNames } from '~/utils/classNames';
 import { HeaderActionButtons } from './HeaderActionButtons.client';
 import { ChatDescription } from '~/lib/persistence/ChatDescription.client';
+import { OpenHandsStatus } from './OpenHandsStatus.client';
 
 export function Header() {
   const chat = useStore(chatStore);
@@ -22,6 +23,9 @@ export function Header() {
           <img src="/logo-light-styled.png" alt="logo" className="w-[90px] inline-block dark:hidden" />
           <img src="/logo-dark-styled.png" alt="logo" className="w-[90px] inline-block hidden dark:block" />
         </a>
+        <ClientOnly>
+          {() => <OpenHandsStatus />}
+        </ClientOnly>
       </div>
       {chat.started && ( // Display ChatDescription and HeaderActionButtons only when the chat has started.
         <>
