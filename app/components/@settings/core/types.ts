@@ -16,7 +16,8 @@ export type TabType =
   | 'event-logs'
   | 'update'
   | 'task-manager'
-  | 'tab-management';
+  | 'tab-management'
+  | 'openhands';
 
 export type WindowType = 'user' | 'developer';
 

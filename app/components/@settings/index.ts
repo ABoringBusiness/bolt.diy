@@ -9,6 +9,9 @@ export { TAB_LABELS, TAB_DESCRIPTIONS, DEFAULT_TAB_CONFIG } from './core/constan
 export { TabTile } from './shared/components/TabTile';
 export { TabManagement } from './shared/components/TabManagement';
 
+// OpenHands integration
+export { OpenHandsSettings } from './OpenHandsSettings.client';
+
 // Utils
 export { getVisibleTabs, reorderTabs, resetToDefaultConfig } from './utils/tab-helpers';
 export * from './utils/animations';
