@@ -1,0 +1,9 @@
+apiVersion: v2
+name: bolt-diy
+description: A Helm chart for Bolt.DIY application
+type: application
+version: 0.1.0
+appVersion: "0.0.7"
+maintainers:
+  - name: Bolt.DIY Team
+    email: maintainers@bolt.diy

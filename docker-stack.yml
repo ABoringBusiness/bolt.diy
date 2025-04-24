@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  bolt:
+    image: bolt-ai:production
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: bolt-ai-production
+    ports:
+      - "5173:5173"
+    env_file: .env.local
+    environment:
+      - NODE_ENV=production
+      - RUNNING_IN_DOCKER=true
+    deploy:
+      replicas: 5  # Adjust as needed
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5173/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - bolt
+    deploy:
+      replicas: 1
